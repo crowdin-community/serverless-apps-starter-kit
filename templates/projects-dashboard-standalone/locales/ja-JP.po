@@ -1,0 +1,86 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-06-11 11:45+0300\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: ja-JP\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#. placeholder {0}: agg.preTranslate
+msgid "({0} words auto-translated)"
+msgstr "（{0}語を自動翻訳）"
+
+#. placeholder {0}: group.projectsCount ?? 0
+msgid "{0, plural, one {# project} other {# projects}}"
+msgstr "{0, plural, other {#件のプロジェクト}}"
+
+#. placeholder {0}: group.subgroupsCount ?? 0
+msgid "{0, plural, one {# subgroup} other {# subgroups}}"
+msgstr "{0, plural, other {#件のサブグループ}}"
+
+#. placeholder {0}: agg.translated
+#. placeholder {1}: agg.total
+msgid "{0} out of {1} words ({translatedPct}%)"
+msgstr "{1}語中{0}語（{translatedPct}%）"
+
+#. placeholder {0}: agg.approved
+msgid "{0} words ({approvedPct}%)"
+msgstr "{0}語（{approvedPct}%）"
+
+msgid "{languages, plural, one {# language} other {# languages}}"
+msgstr "{languages, plural, other {#言語}}"
+
+msgid "All projects added to the group will appear here"
+msgstr "グループに追加されたすべてのプロジェクトがここに表示されます"
+
+msgid "Approved"
+msgstr "承認済み"
+
+msgid "Could not load this view"
+msgstr "この画面を読み込めませんでした"
+
+msgid "Groups"
+msgstr "グループ"
+
+msgid "No projects in this group"
+msgstr "このグループにはプロジェクトがありません"
+
+msgid "No projects yet"
+msgstr "プロジェクトはまだありません"
+
+msgid "Projects"
+msgstr "プロジェクト"
+
+msgid "Projects added to your organization will appear here"
+msgstr "組織に追加されたプロジェクトがここに表示されます"
+
+msgid "Projects you create or join will appear here"
+msgstr "作成または参加したプロジェクトがここに表示されます"
+
+msgid "Reverse the order"
+msgstr "並び順を反転"
+
+msgid "Sort by date added"
+msgstr "追加日で並べ替え"
+
+msgid "Sort by last activity"
+msgstr "最終アクティビティで並べ替え"
+
+msgid "Sort by name"
+msgstr "名前で並べ替え"
+
+msgid "Sort projects"
+msgstr "プロジェクトの並べ替え"
+
+msgid "Translated"
+msgstr "翻訳済み"
+
+msgid "Workspace"
+msgstr "ワークスペース"

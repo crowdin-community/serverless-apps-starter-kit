@@ -1,0 +1,86 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-06-12 11:24+0300\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en-US\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#. placeholder {0}: agg.preTranslate
+msgid "({0} words auto-translated)"
+msgstr "({0} words auto-translated)"
+
+#. placeholder {0}: group.projectsCount ?? 0
+msgid "{0, plural, one {# project} other {# projects}}"
+msgstr "{0, plural, one {# project} other {# projects}}"
+
+#. placeholder {0}: group.subgroupsCount ?? 0
+msgid "{0, plural, one {# subgroup} other {# subgroups}}"
+msgstr "{0, plural, one {# subgroup} other {# subgroups}}"
+
+#. placeholder {0}: agg.translated
+#. placeholder {1}: agg.total
+msgid "{0} out of {1} words ({translatedPct}%)"
+msgstr "{0} out of {1} words ({translatedPct}%)"
+
+#. placeholder {0}: agg.approved
+msgid "{0} words ({approvedPct}%)"
+msgstr "{0} words ({approvedPct}%)"
+
+msgid "{languages, plural, one {# language} other {# languages}}"
+msgstr "{languages, plural, one {# language} other {# languages}}"
+
+msgid "All projects added to the group will appear here"
+msgstr "All projects added to the group will appear here"
+
+msgid "Approved"
+msgstr "Approved"
+
+msgid "Could not load this view"
+msgstr "Could not load this view"
+
+msgid "Groups"
+msgstr "Groups"
+
+msgid "No projects in this group"
+msgstr "No projects in this group"
+
+msgid "No projects yet"
+msgstr "No projects yet"
+
+msgid "Projects"
+msgstr "Projects"
+
+msgid "Projects added to your organization will appear here"
+msgstr "Projects added to your organization will appear here"
+
+msgid "Projects you create or join will appear here"
+msgstr "Projects you create or join will appear here"
+
+msgid "Reverse the order"
+msgstr "Reverse the order"
+
+msgid "Sort by date added"
+msgstr "Sort by date added"
+
+msgid "Sort by last activity"
+msgstr "Sort by last activity"
+
+msgid "Sort by name"
+msgstr "Sort by name"
+
+msgid "Sort projects"
+msgstr "Sort projects"
+
+msgid "Translated"
+msgstr "Translated"
+
+msgid "Workspace"
+msgstr "Workspace"

@@ -1,0 +1,4 @@
+{
+  "extends": "@crowdin/serverless-apps-cli/tsconfig.base.json",
+  "include": ["src"]
+}

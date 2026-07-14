@@ -1,0 +1,47 @@
+{
+  "private": true,
+  "name": "projects-dashboard-standalone",
+  "type": "module",
+  "packageManager": "pnpm@11.5.2",
+  "description": "Projects dashboard serverless Crowdin app (organization-menu and profile-resources-menu modules) built on @crowdin/serverless-apps-sdk alone - owns its full Vite/Lingui/Biome toolchain.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "lingui extract && node scripts/build.mjs",
+    "extract": "lingui extract",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@crowdin/serverless-apps-sdk": "^0.1.0",
+    "@crowdin/crowdin-api-client": "^1.55.4",
+    "@lingui/core": "^6.2.0",
+    "@lingui/message-utils": "^6.2.0",
+    "@lingui/react": "^6.2.0",
+    "dayjs": "^1.11.21",
+    "lucide-react": "^0.577.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.3",
+    "@lingui/cli": "^6.2.0",
+    "@lingui/format-po": "^6.2.0",
+    "@lingui/swc-plugin": "^6.0.0",
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react-swc": "^4.3.1",
+    "fflate": "^0.8.2",
+    "sirv": "^3.0.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.0",
+    "vite-plugin-css-injected-by-js": "^5.0.1"
+  },
+  "engines": {
+    "node": "^22.19 || ^24"
+  }
+}

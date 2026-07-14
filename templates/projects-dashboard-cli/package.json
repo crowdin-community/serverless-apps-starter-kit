@@ -1,0 +1,37 @@
+{
+  "private": true,
+  "name": "projects-dashboard-cli",
+  "packageManager": "pnpm@11.5.2",
+  "description": "Projects dashboard serverless Crowdin app (organization-menu and profile-resources-menu modules) - code only; @crowdin/serverless-apps-cli owns the toolchain.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "crowdin-serverless-apps dev",
+    "build": "crowdin-serverless-apps build",
+    "publish": "crowdin-serverless-apps publish",
+    "extract": "crowdin-serverless-apps extract",
+    "lint": "crowdin-serverless-apps lint",
+    "format": "crowdin-serverless-apps format",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@crowdin/serverless-apps-sdk": "^0.1.0",
+    "@crowdin/crowdin-api-client": "^1.55.4",
+    "@lingui/core": "^6.2.0",
+    "@lingui/message-utils": "^6.2.0",
+    "@lingui/react": "^6.2.0",
+    "dayjs": "^1.11.21",
+    "lucide-react": "^0.577.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@crowdin/serverless-apps-cli": "^0.1.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": "^22.19 || ^24"
+  }
+}
