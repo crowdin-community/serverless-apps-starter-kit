@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@crowdin/serverless-apps-sdk": "^0.1.0",
+    "@crowdin/serverless-apps-sdk": "0.x",
     "@crowdin/crowdin-api-client": "^1.55.4",
     "@lingui/core": "^6.2.0",
     "@lingui/message-utils": "^6.2.0",
@@ -25,7 +25,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@crowdin/serverless-apps-cli": "^0.1.0",
+    "@crowdin/serverless-apps-cli": "0.x",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "tailwindcss": "^4.3.0",
