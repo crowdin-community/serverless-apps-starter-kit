@@ -1,5 +1,6 @@
-import { getContext, redirect, resize } from "@crowdin/serverless-apps-sdk";
+import { redirect, resize } from "@crowdin/serverless-apps-sdk";
 import { createCrowdinClient } from "@crowdin/serverless-apps-sdk/api";
+import { useCrowdinContext } from "@crowdin/serverless-apps-sdk/react";
 import {
   Alert,
   AlertDescription,
@@ -535,7 +536,7 @@ function SortControl({
 export function App() {
   const client = useMemo(() => createCrowdinClient(), []);
   const progressLimit = useMemo(() => createLimiter(6), []);
-  const isEnterprise = getContext().app.type === "organization-menu";
+  const { isEnterprise } = useCrowdinContext();
 
   const [path, setPath] = useState<Crumb[]>([]);
   const [state, setState] = useState<LoadState>({ status: "loading" });
