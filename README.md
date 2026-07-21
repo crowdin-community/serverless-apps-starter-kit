@@ -36,8 +36,8 @@ crowdin-serverless-apps login
 crowdin-serverless-apps create my-app --template projects-dashboard-cli   # or projects-dashboard-standalone
 cd my-app
 pnpm install
-pnpm dev        # the app now runs live inside Crowdin with hot reload
-pnpm publish    # build, upload, and serve the app from Crowdin
+pnpm dev          # the app now runs live inside Crowdin with hot reload
+pnpm run publish  # build, upload, and serve the app from Crowdin
 ```
 
 To work on the templates in this repository directly, run `pnpm install` inside a template directory and use `crowdin-serverless-apps link` to connect it to an app registered in your Crowdin account.
@@ -55,7 +55,7 @@ Available in both templates:
 | `pnpm format` | Auto-format with Biome |
 | `pnpm typecheck` | Type-check with `tsc --noEmit` |
 
-The CLI template additionally has `pnpm publish` (build, upload the bundle to Crowdin, and switch the app to serve it).
+The CLI template additionally has `pnpm run publish` (build, upload the bundle to Crowdin, and switch the app to serve it). Note the explicit `run`: plain `pnpm publish` invokes pnpm's built-in registry publish, which never reaches the script.
 
 ## Anatomy of a template
 

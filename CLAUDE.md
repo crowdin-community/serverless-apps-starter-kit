@@ -28,7 +28,7 @@ pnpm format       # Biome, writes changes
 pnpm typecheck    # tsc --noEmit
 ```
 
-CLI template only: `pnpm publish` (build + upload bundle to Crowdin). All its scripts delegate to the `crowdin-serverless-apps` binary, which also provides `login`, `create`, `link`, `preview`, `manifest status|pull|push` — see the CLI README.
+CLI template only: `pnpm run publish` (build + upload bundle to Crowdin; the explicit `run` matters: plain `pnpm publish` triggers pnpm's built-in registry publish and never runs the script). All its scripts delegate to the `crowdin-serverless-apps` binary, which also provides `login`, `create`, `link`, `preview`, `manifest status|pull|push` — see the CLI README.
 
 There are no tests.
 
