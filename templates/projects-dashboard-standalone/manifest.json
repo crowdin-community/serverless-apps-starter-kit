@@ -3,8 +3,9 @@
   "name": "Projects dashboard (standalone)",
   "logo": "/logo.png",
   "scopes": [
-    "project",
-    "group"
+    "project.settings:read",
+    "project.status.progress:read",
+    "group:read"
   ],
   "bundle": {
     "mode": "external",
