@@ -1,3 +1,5 @@
+minimumReleaseAgeExclude:
+  - '@crowdin/*'
 allowBuilds:
   esbuild: true
   '@swc/core': true
