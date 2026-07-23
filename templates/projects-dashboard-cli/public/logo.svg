@@ -1,0 +1,45 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Rounded square background with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ECDC4"/>
+      <stop offset="100%" stop-color="#44A08D"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="4" y="4" width="56" height="56" rx="12" ry="12" fill="url(#bgGradient)"/>
+  
+  <!-- Grid pattern border -->
+  <!-- Top border squares -->
+  <rect x="12" y="4" width="6" height="6" fill="#2B7A78"/>
+  <rect x="22" y="4" width="6" height="6" fill="#2B7A78"/>
+  <rect x="32" y="4" width="6" height="6" fill="#2B7A78"/>
+  <rect x="42" y="4" width="6" height="6" fill="#2B7A78"/>
+  
+  <!-- Right border squares -->
+  <rect x="54" y="12" width="6" height="6" fill="#2B7A78"/>
+  <rect x="54" y="22" width="6" height="6" fill="#2B7A78"/>
+  <rect x="54" y="32" width="6" height="6" fill="#2B7A78"/>
+  <rect x="54" y="42" width="6" height="6" fill="#2B7A78"/>
+  
+  <!-- Bottom border squares -->
+  <rect x="42" y="54" width="6" height="6" fill="#2B7A78"/>
+  <rect x="32" y="54" width="6" height="6" fill="#2B7A78"/>
+  <rect x="22" y="54" width="6" height="6" fill="#2B7A78"/>
+  <rect x="12" y="54" width="6" height="6" fill="#2B7A78"/>
+  
+  <!-- Left border squares -->
+  <rect x="4" y="42" width="6" height="6" fill="#2B7A78"/>
+  <rect x="4" y="32" width="6" height="6" fill="#2B7A78"/>
+  <rect x="4" y="22" width="6" height="6" fill="#2B7A78"/>
+  <rect x="4" y="12" width="6" height="6" fill="#2B7A78"/>
+  
+  <!-- Corner squares with rounded corners -->
+  <rect x="4" y="4" width="6" height="6" rx="3" ry="3" fill="#2B7A78"/>
+  <rect x="54" y="4" width="6" height="6" rx="3" ry="3" fill="#2B7A78"/>
+  <rect x="54" y="54" width="6" height="6" rx="3" ry="3" fill="#2B7A78"/>
+  <rect x="4" y="54" width="6" height="6" rx="3" ry="3" fill="#2B7A78"/>
+  
+  <!-- Central area with subtle pattern -->
+  <rect x="14" y="14" width="36" height="36" rx="4" ry="4" fill="#5DD5D5" opacity="0.3"/>
+</svg>

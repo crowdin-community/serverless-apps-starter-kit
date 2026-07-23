@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@crowdin/serverless-apps-sdk/manifest.schema.json",
   "name": "Projects dashboard (CLI)",
-  "logo": "/logo.png",
+  "logo": "/logo.svg",
   "scopes": [
     "project.settings:read",
     "project.status.progress:read",
