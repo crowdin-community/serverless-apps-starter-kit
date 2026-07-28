@@ -1,26 +1,66 @@
 import http from "node:http";
+import net from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sirv from "sirv";
 import { createServer } from "vite";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const PORT_ATTEMPTS = 10;
 
-function resolvePort() {
+function requestedPort() {
   const argv = process.argv.slice(2);
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === "--port") {
       const value = argv[++i];
-      if (value !== undefined) return Number(value);
+      if (value !== undefined) return { port: Number(value), strict: true };
     } else if (arg.startsWith("--port=")) {
-      return Number(arg.slice("--port=".length));
+      return { port: Number(arg.slice("--port=".length)), strict: true };
     }
   }
-  return process.env.PORT ? Number(process.env.PORT) : 8080;
+  const fromEnv = process.env.PORT ? Number(process.env.PORT) : 8080;
+  return { port: fromEnv, strict: false };
 }
 
-const port = resolvePort();
+function isFree(port) {
+  return new Promise((resolve) => {
+    const probe = net.createServer();
+    probe.once("error", () => resolve(false));
+    probe.once("listening", () => probe.close(() => resolve(true)));
+    probe.listen(port, "localhost");
+  });
+}
+
+// A second dev server must not fight the first one over a port: move up, and say so.
+async function resolvePort() {
+  const { port: requested, strict } = requestedPort();
+  if (await isFree(requested)) return requested;
+
+  if (strict) {
+    console.error(
+      `Port ${requested} is already in use - stop the other process, ` +
+        "pass another --port, or omit --port to use the next free port.",
+    );
+    process.exit(1);
+  }
+
+  const last = requested + PORT_ATTEMPTS - 1;
+  for (let candidate = requested + 1; candidate <= last; candidate++) {
+    if (await isFree(candidate)) {
+      console.log(`Port ${requested} is in use, using ${candidate} instead.`);
+      return candidate;
+    }
+  }
+
+  console.error(
+    `Ports ${requested}-${last} are all in use - ` +
+      "free one of them or pass --port <n>.",
+  );
+  process.exit(1);
+}
+
+const port = await resolvePort();
 const entryUrl = "/src/index.tsx";
 
 await import("./compile-i18n.mjs");
@@ -47,13 +87,16 @@ const applyCors = (req, res) => {
   }
 };
 
+const server = http.createServer();
+
+// Hand Vite this server so HMR shares the app's port instead of Vite's own fixed 24678.
 const vite = await createServer({
   root,
   configFile: path.join(root, "vite.config.ts"),
   appType: "custom",
   server: {
     middlewareMode: true,
-    hmr: { host: "localhost", protocol: "ws" },
+    ws: { server, host: "localhost", protocol: "ws" },
     cors: { origin: corsAllowlist },
   },
 });
@@ -71,7 +114,7 @@ const bootstrap = `(async () => {
   await import("http://localhost:${port}${entryUrl}");
 })();`;
 
-const server = http.createServer((req, res) => {
+server.on("request", (req, res) => {
   if (req.url === "/app.js") {
     res.setHeader("Content-Type", "text/javascript");
     applyCors(req, res);
