@@ -93,7 +93,7 @@ const COLOR_TRANSLATED = "#9cc7ff";
 const SORT_FIELDS: SortField[] = ["name", "createdAt", "lastActivity"];
 const SORT_STORAGE_KEY = "crowdin-app-dashboard-sort";
 
-const ROOT_GROUP_ID = 1;
+const ROOT_GROUP_ID = 0;
 
 const LOADING_PLACEHOLDERS = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
@@ -543,6 +543,8 @@ export function App() {
   const [sort, setSort] = useState(readStoredSort);
 
   const currentGroupId = path[path.length - 1]?.id ?? ROOT_GROUP_ID;
+  // @crowdin/crowdin-api-client omits falsy query params, so the root group id (0) has to be sent as a string
+  const groupIdParam = String(currentGroupId) as unknown as number;
 
   useEffect(() => {
     try {
@@ -560,11 +562,11 @@ export function App() {
       isEnterprise
         ? client.projectsGroupsApi
             .withFetchAll()
-            .listGroups({ parentId: currentGroupId })
+            .listGroups({ parentId: groupIdParam })
         : Promise.resolve(null),
       client.projectsGroupsApi
         .withFetchAll()
-        .listProjects(isEnterprise ? { groupId: currentGroupId } : {}),
+        .listProjects(isEnterprise ? { groupId: groupIdParam } : {}),
     ]).then(([groupsRes, projectsRes]) => {
       if (!active) return;
       if (projectsRes.status === "rejected") {
@@ -589,7 +591,7 @@ export function App() {
     return () => {
       active = false;
     };
-  }, [client, currentGroupId, isEnterprise]);
+  }, [client, groupIdParam, isEnterprise]);
 
   useEffect(() => {
     resize();
