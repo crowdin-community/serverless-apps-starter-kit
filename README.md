@@ -48,7 +48,7 @@ Available in both templates:
 
 | Command | Description |
 |---------|-------------|
-| `pnpm dev` | Dev server on port 8080 with hot reload; the app loads live inside Crowdin |
+| `pnpm dev` | Dev server on port 8080 (or the next free port) with hot reload; the app loads live inside Crowdin |
 | `pnpm build` | Production build → `dist/`, packaged as `dist/bundle.zip` |
 | `pnpm extract` | Scan the source for translatable text and update `locales/*.po` |
 | `pnpm lint` | Lint with Biome |

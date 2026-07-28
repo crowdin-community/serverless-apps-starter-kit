@@ -13,7 +13,7 @@ The toolchain is part of the project (`vite.config.ts`, `lingui.config.mjs`, `bi
 Node `^22.19 || ^24`, pnpm (`pnpm install` first).
 
 ```bash
-pnpm dev          # local dev server on :8080 (--port <n> or PORT env)
+pnpm dev          # local dev server on :8080, or the next free port (--port <n> is exact, PORT sets the starting point)
 pnpm build        # lingui extract → Vite build → compile catalogs → dist/bundle.zip
 pnpm extract      # Lingui: scan src for translatable text, update locales/*.po
 pnpm lint         # Biome
@@ -60,5 +60,5 @@ The host loads the bundle via a **classic `<script>` tag**, not ESM. This drives
 
 - Vite library mode, `iife` format, single `dist/app.js`; CSS is injected by JS (`vite-plugin-css-injected-by-js`), no separate stylesheet.
 - `process.env.NODE_ENV` is replaced via `define` (an IIFE has no `process`).
-- `scripts/dev.mjs` hand-rolls the react-refresh preamble + Vite client bootstrap served as `/app.js`, serves `/locales/` from `dist/`, and applies a CORS allowlist (localhost, `*.bundle.crowdin.net`, plus origins from `CROWDIN_DEV_CORS_ORIGIN`).
+- `scripts/dev.mjs` hand-rolls the react-refresh preamble + Vite client bootstrap served as `/app.js`, serves `/locales/` from `dist/`, and applies a CORS allowlist (localhost, `*.bundle.crowdin.net`, plus origins from `CROWDIN_DEV_CORS_ORIGIN`). It passes its own http server to Vite as `server.ws.server` so HMR shares the app's port: in `middlewareMode` Vite would otherwise open a second server on a fixed 24678, which breaks the moment two dev servers run.
 - `scripts/build.mjs` runs Vite first, then `compile-i18n.mjs` (Vite's `emptyOutDir` would wipe the catalogs), then zips `dist/` into `dist/bundle.zip` deterministically (fixed 1980 mtime, since fflate rejects mtime 0). Keep that ordering.

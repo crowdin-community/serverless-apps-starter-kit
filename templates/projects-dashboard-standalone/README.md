@@ -16,7 +16,7 @@ The toolchain is part of the project, built on [`@crowdin/serverless-apps-sdk`](
 
 ```bash
 pnpm install
-pnpm dev        # dev server on http://localhost:8080 (pass --port <n> or set PORT to change)
+pnpm dev        # dev server on http://localhost:8080, or the next free port (--port <n> is exact, PORT sets the starting point)
 ```
 
 Crowdin loads the app straight from the dev server while the registered app's bundle is set to `external` → `http://localhost:8080/`. Everything you edit shows up inside Crowdin instantly, hot reload included: open the app's page in Crowdin; it appears in the UI slots declared in the manifest (here the organization menu and the profile resources menu).
@@ -25,7 +25,7 @@ Crowdin loads the app straight from the dev server while the registered app's bu
 
 | Command | Description |
 |---------|-------------|
-| `pnpm dev` | Dev server on port 8080 with hot reload; the app loads live inside Crowdin |
+| `pnpm dev` | Dev server on port 8080 (or the next free port) with hot reload; the app loads live inside Crowdin |
 | `pnpm build` | Extract strings, build with Vite, compile catalogs, package `dist/bundle.zip` |
 | `pnpm extract` | Scan the source for translatable text and update `locales/*.po` |
 | `pnpm lint` | Lint with Biome |

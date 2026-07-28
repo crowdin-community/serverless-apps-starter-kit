@@ -32,7 +32,7 @@ npx @crowdin/serverless-apps-cli link   # writes CROWDIN_APP_ID to .env (gitigno
 
 | Command | Description |
 |---------|-------------|
-| `pnpm dev` | Dev server on port 8080 with hot reload; the app loads live inside Crowdin |
+| `pnpm dev` | Dev server on port 8080 (or the next free port) with hot reload; the app loads live inside Crowdin |
 | `pnpm build` | Production build → `dist/`, packaged as `dist/bundle.zip` |
 | `pnpm run publish` | Build, upload the bundle to Crowdin, and switch the app to serve it |
 | `pnpm extract` | Scan the source for translatable text and update `locales/*.po` |

@@ -20,7 +20,7 @@ Run inside a template directory. Node `^22.19 || ^24`, pnpm (`pnpm install` firs
 Both templates:
 
 ```bash
-pnpm dev          # dev server on :8080 with HMR; the app loads live inside Crowdin
+pnpm dev          # dev server on :8080 (or the next free port) with HMR; the app loads live inside Crowdin
 pnpm build        # production build → dist/ (incl. dist/bundle.zip)
 pnpm extract      # Lingui: scan src for translatable text, update locales/*.po
 pnpm lint         # Biome
