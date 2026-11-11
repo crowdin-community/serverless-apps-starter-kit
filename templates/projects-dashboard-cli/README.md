@@ -28,13 +28,15 @@ npx @crowdin/serverless-apps-cli login
 npx @crowdin/serverless-apps-cli link   # writes CROWDIN_APP_ID to .env (gitignored)
 ```
 
+No app in Crowdin yet? Run `pnpm install && pnpm build`, install `dist/<app-name>.crowdinapp` in Crowdin, then run `link`.
+
 ## Commands
 
 | Command | Description |
 |---------|-------------|
 | `pnpm dev` | Dev server on port 8080 (or the next free port) with hot reload; the app loads live inside Crowdin |
-| `pnpm build` | Production build → `dist/`, packaged as `dist/bundle.zip` |
-| `pnpm run publish` | Build, upload the bundle to Crowdin, and switch the app to serve it |
+| `pnpm build` | Production build → `dist/`, packed as `dist/<app-name>.crowdinapp` |
+| `pnpm run publish` | Build, send the app file (the manifest and the build) to Crowdin, and switch the app to serve it |
 | `pnpm extract` | Scan the source for translatable text and update `locales/*.po` |
 | `pnpm lint` | Lint with Biome |
 | `pnpm format` | Auto-format with Biome |
@@ -42,33 +44,36 @@ npx @crowdin/serverless-apps-cli link   # writes CROWDIN_APP_ID to .env (gitigno
 
 Note the explicit `run` in `pnpm run publish`: plain `pnpm publish` invokes pnpm's built-in registry publish and never reaches the script.
 
-The scripts delegate to the `crowdin-serverless-apps` binary, which also provides `login`, `link`, `preview`, and `manifest status|pull|push`; see the [CLI README](https://github.com/crowdin/serverless-apps).
+The scripts delegate to the `crowdin-serverless-apps` binary, which also provides `login`, `link`, `preview`, and `manifest validate`; see the [CLI README](https://github.com/crowdin/serverless-apps).
 
 ## The manifest
 
-`manifest.json` declares the app to Crowdin: its name, the OAuth scopes it needs, the `modules` (which Crowdin UI slots it fills), and the bundle mode, which is either `external` (Crowdin loads the app from your dev server) or `internal` (Crowdin serves the uploaded `dist/bundle.zip`).
+`manifest.json` declares the app to Crowdin: its name, the OAuth scopes it needs and the `modules` (which Crowdin UI slots it fills). It reaches Crowdin together with the build, as one app file (`.crowdinapp`), so there is no separate step to sync it:
 
-**`publish` and `dev` only switch the bundle mode.** They do not sync the rest of the manifest. After changing scopes, modules, the name, or the logo, push the manifest explicitly:
+- `pnpm run publish` sends the manifest and the build in one request.
+- `pnpm dev` sends the manifest when it starts, if it differs from the installed one, and again each time you save a valid `manifest.json`.
+
+To check the file without sending it:
 
 ```bash
-npx @crowdin/serverless-apps-cli manifest status   # diff local manifest.json vs the registered app
-npx @crowdin/serverless-apps-cli manifest push     # apply local manifest.json to Crowdin
-npx @crowdin/serverless-apps-cli manifest pull     # overwrite local manifest.json from Crowdin
+npx @crowdin/serverless-apps-cli manifest validate
 ```
+
+Where Crowdin loads the app from is not part of the manifest: `dev` points the app at your dev server (development mode), and `publish` offers to switch it back to the build Crowdin hosts. The `bundle` field is there for older versions of the CLI; newer ones and Crowdin ignore it.
 
 Keep `scopes` down to what the app's API calls actually need.
 
 ## Project structure
 
 ```
-manifest.json                    # app manifest: name, scopes, UI modules, bundle mode
+manifest.json                    # app manifest: name, scopes, UI modules
 src/
   index.tsx                      # entry: registers a module per manifest slot
   modules/dashboard/index.tsx    # module contract: mounts React into #root
   modules/dashboard/app.tsx      # the UI
   styles.css                     # Tailwind + the SDK theme
 locales/*.po                     # Lingui catalogs (en-US is the source locale)
-public/logo.png                  # app logo referenced by the manifest
+public/logo.svg                  # app logo referenced by the manifest
 .env                             # CROWDIN_APP_ID: your link to the registered app (gitignored)
 ```
 
