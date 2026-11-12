@@ -10,39 +10,41 @@ The [`crowdin-serverless-apps` CLI](https://github.com/crowdin/serverless-apps) 
 
 ## Commands
 
-Node `^22.19 || ^24`, pnpm (`pnpm install` first).
+Node `^22.19 || ^24` and the package manager whose lockfile the project has (`pnpm-lock.yaml`, `package-lock.json`, `bun.lock` or `bun.lockb`): install with it first and run the scripts below through it, as `npm run dev` or `bun run dev`.
 
 ```bash
 pnpm dev          # dev server on :8080 with HMR; the app loads live inside Crowdin
-pnpm build        # production build → dist/ (incl. dist/bundle.zip)
-pnpm run publish  # build + upload dist/bundle.zip + switch the app to the Crowdin-served bundle
+pnpm build        # production build → dist/ (incl. dist/<app-name>.crowdinapp)
+pnpm run publish  # build + send the app file (manifest and build) + switch the app to the Crowdin-hosted build
 pnpm extract      # Lingui: scan src for translatable text, update locales/*.po
 pnpm lint         # Biome
 pnpm format       # Biome, writes changes
 pnpm typecheck    # tsc --noEmit
 ```
 
-All scripts delegate to the `crowdin-serverless-apps` binary, which also provides `login`, `link`, `preview [--module <key>]`, and `manifest status|pull|push` (run via `npx @crowdin/serverless-apps-cli ...`).
+In a shell without a terminal (an agent, CI) add `--yes`: `pnpm dev --yes`, `pnpm run publish --yes` (with npm, `npm run publish -- --yes`). Without it `dev` sends nothing to Crowdin, and `publish` leaves the app in development mode.
+
+All scripts delegate to the `crowdin-serverless-apps` binary, which also provides `login`, `link`, `preview [--module <key>]`, and `manifest validate` (run via `npx @crowdin/serverless-apps-cli ...`).
 
 There are no tests.
 
-## Manifest changes: use `manifest push`, not `publish`
+## Manifest changes travel with the build
 
-`publish` (and `dev`) update **only** where Crowdin loads the bundle from (`bundle.mode` / `bundle.url`: `external` = your dev server, `internal` = the uploaded `dist/bundle.zip`). They do **not** sync the rest of `manifest.json`: scopes, modules, name, logo.
+`manifest.json` (scopes, modules, name, logo) reaches Crowdin only together with the build, as one app file (`.crowdinapp`). `pnpm run publish` sends both in one request. `pnpm dev` sends the manifest when it starts, if it differs from the installed one, and again whenever you save a valid `manifest.json` that changed. There is no `manifest push` any more, so do not look for a separate sync step.
 
-After editing anything else in `manifest.json`, sync it explicitly:
+Where Crowdin loads the app from is not part of the manifest: `dev` points the app at your dev server (development mode), `publish` switches it back to the build Crowdin hosts. The `bundle` field in `manifest.json` is kept for older versions of the CLI; newer ones and Crowdin ignore it, so leave it alone.
+
+After editing `manifest.json`, check it:
 
 ```bash
-npx @crowdin/serverless-apps-cli manifest status   # diff local manifest.json vs the registered app
-npx @crowdin/serverless-apps-cli manifest push     # apply local manifest.json to Crowdin
-npx @crowdin/serverless-apps-cli manifest pull     # overwrite local manifest.json from Crowdin
+npx @crowdin/serverless-apps-cli manifest validate
 ```
 
 Keep `scopes` least-privilege: declare only what the app's API calls actually need.
 
 ## Architecture
 
-- `manifest.json` declares the app to Crowdin: name, scopes, `modules` (which Crowdin UI slots the app fills; here `organization-menu` and `profile-resources-menu`), and the bundle mode (see above).
+- `manifest.json` declares the app to Crowdin: name, scopes and `modules` (which Crowdin UI slots the app fills; here `organization-menu` and `profile-resources-menu`). See above for how it reaches Crowdin.
 - `src/index.tsx` is the entry point. One `prepare*` call per manifest module (`prepareOrganizationMenu`, `prepareProfileResourcesMenu`, …); keep these in sync with the `modules` section of `manifest.json`.
 - `src/modules/dashboard/index.tsx` is a `ModuleContract` (`{ render }`) that mounts React into `#root`, wrapped in `AppI18nProvider` + `AppUiProvider`.
 - `src/modules/dashboard/app.tsx` is the actual UI.
