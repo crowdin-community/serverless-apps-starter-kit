@@ -1,0 +1,15 @@
+// Build and local-dev configuration only. Hosted, Crowdin supplies every binding and the hostname;
+// `crowdin-serverless-apps build` runs `wrangler deploy --dry-run` to turn src/ into the one-file bundle that is uploaded.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "__APP_IDENTIFIER__",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-09-01",
+  "compatibility_flags": ["nodejs_compat", "enable_nodejs_http_modules", "enable_nodejs_http_server_modules"],
+  "assets": {
+    "directory": "public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/*", "!/assets/*"]
+  },
+  "d1_databases": [{ "binding": "DB", "database_name": "__APP_IDENTIFIER__-local", "database_id": "local" }]
+}

@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "name": "__APP_IDENTIFIER__",
+  "version": "0.0.0",
+  "description": "A Crowdin app hosted on Crowdin, built with the SDK's Cloudflare adapter.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "crowdin-apps-sdk prepare-assets && wrangler dev",
+    "build": "crowdin-serverless-apps build",
+    "publish": "crowdin-serverless-apps publish",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@crowdin/app-project-module": "3.16.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261104.1",
+    "@types/express": "^5.0.6",
+    "typescript": "^6.0.3",
+    "wrangler": "4.157.0"
+  },
+  "engines": {
+    "node": "^22.19 || ^24"
+  }
+}

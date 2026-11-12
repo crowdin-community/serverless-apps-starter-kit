@@ -1,0 +1,6 @@
+minimumReleaseAgeExclude:
+  - '@crowdin/*'
+allowBuilds:
+  better-sqlite3: false
+  esbuild: true
+  workerd: true
