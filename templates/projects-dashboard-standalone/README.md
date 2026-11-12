@@ -9,7 +9,7 @@ The toolchain is part of the project, built on [`@crowdin/serverless-apps-sdk`](
 ## Requirements
 
 - Node.js `^22.19 || ^24`
-- [pnpm](https://pnpm.io)
+- [pnpm](https://pnpm.io), npm or Bun - the one whose lockfile is in the project. The commands below use pnpm; with another manager run them as `npm run dev` or `bun run dev`.
 - A Crowdin or Crowdin Enterprise account with the app installed
 
 ## Getting started

@@ -10,7 +10,7 @@ The toolchain is part of the project (`vite.config.ts`, `lingui.config.mjs`, `bi
 
 ## Commands
 
-Node `^22.19 || ^24`, pnpm (`pnpm install` first).
+Node `^22.19 || ^24` and the package manager whose lockfile the project has (`pnpm-lock.yaml`, `package-lock.json`, `bun.lock` or `bun.lockb`): install with it first and run the scripts below through it, as `npm run dev` or `bun run dev`.
 
 ```bash
 pnpm dev          # local dev server on :8080, or the next free port (--port <n> is exact, PORT sets the starting point)

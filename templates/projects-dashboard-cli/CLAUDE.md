@@ -10,7 +10,7 @@ The [`crowdin-serverless-apps` CLI](https://github.com/crowdin/serverless-apps) 
 
 ## Commands
 
-Node `^22.19 || ^24`, pnpm (`pnpm install` first).
+Node `^22.19 || ^24` and the package manager whose lockfile the project has (`pnpm-lock.yaml`, `package-lock.json`, `bun.lock` or `bun.lockb`): install with it first and run the scripts below through it, as `npm run dev` or `bun run dev`.
 
 ```bash
 pnpm dev          # dev server on :8080 with HMR; the app loads live inside Crowdin
@@ -22,13 +22,15 @@ pnpm format       # Biome, writes changes
 pnpm typecheck    # tsc --noEmit
 ```
 
+In a shell without a terminal (an agent, CI) add `--yes`: `pnpm dev --yes`, `pnpm run publish --yes` (with npm, `npm run publish -- --yes`). Without it `dev` sends nothing to Crowdin, and `publish` leaves the app in development mode.
+
 All scripts delegate to the `crowdin-serverless-apps` binary, which also provides `login`, `link`, `preview [--module <key>]`, and `manifest validate` (run via `npx @crowdin/serverless-apps-cli ...`).
 
 There are no tests.
 
 ## Manifest changes travel with the build
 
-`manifest.json` (scopes, modules, name, logo) reaches Crowdin only together with the build, as one app file (`.crowdinapp`). `pnpm run publish` sends both in one request. `pnpm dev` sends the manifest when it starts, if it differs from the installed one, and again on every save of a valid `manifest.json`. There is no `manifest push` any more, so do not look for a separate sync step.
+`manifest.json` (scopes, modules, name, logo) reaches Crowdin only together with the build, as one app file (`.crowdinapp`). `pnpm run publish` sends both in one request. `pnpm dev` sends the manifest when it starts, if it differs from the installed one, and again whenever you save a valid `manifest.json` that changed. There is no `manifest push` any more, so do not look for a separate sync step.
 
 Where Crowdin loads the app from is not part of the manifest: `dev` points the app at your dev server (development mode), `publish` switches it back to the build Crowdin hosts. The `bundle` field in `manifest.json` is kept for older versions of the CLI; newer ones and Crowdin ignore it, so leave it alone.
 
