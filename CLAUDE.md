@@ -21,14 +21,14 @@ Both templates:
 
 ```bash
 pnpm dev          # dev server on :8080 (or the next free port) with HMR; the app loads live inside Crowdin
-pnpm build        # production build → dist/ (incl. dist/bundle.zip)
+pnpm build        # production build → dist/ (incl. dist/<app-name>.crowdinapp)
 pnpm extract      # Lingui: scan src for translatable text, update locales/*.po
 pnpm lint         # Biome
 pnpm format       # Biome, writes changes
 pnpm typecheck    # tsc --noEmit
 ```
 
-CLI template only: `pnpm run publish` (build + upload bundle to Crowdin; the explicit `run` matters: plain `pnpm publish` triggers pnpm's built-in registry publish and never runs the script). All its scripts delegate to the `crowdin-serverless-apps` binary, which also provides `login`, `create`, `link`, `preview`, `manifest status|pull|push`; see the CLI README.
+CLI template only: `pnpm run publish` (build + send the app file to Crowdin; the explicit `run` matters: plain `pnpm publish` triggers pnpm's built-in registry publish and never runs the script). All its scripts delegate to the `crowdin-serverless-apps` binary, which also provides `login`, `create`, `link`, `preview`, `manifest validate`; see the CLI README.
 
 There are no tests.
 
@@ -36,7 +36,7 @@ There are no tests.
 
 ### App structure (both templates)
 
-- `manifest.json` declares the app: name, scopes, `modules` (which Crowdin UI slots it fills; here `organization-menu` and `profile-resources-menu`), and `bundle.mode`: `external` (dev: Crowdin loads `http://localhost:8080/app.js` from your machine) vs `internal` (published: Crowdin serves the uploaded `dist/bundle.zip`). The CLI syncs it with the registered app (`manifest push|pull`).
+- `manifest.json` declares the app: name, scopes and `modules` (which Crowdin UI slots it fills; here `organization-menu` and `profile-resources-menu`). It reaches Crowdin only inside the app file (`.crowdinapp`: the manifest plus the build): the CLI template sends it on `publish` and while `dev` runs, the standalone template packs it in `scripts/build.mjs` for upload in the Crowdin UI. Where Crowdin loads the app from (development mode: `http://localhost:8080/app.js` from your machine; otherwise the uploaded build) is set in Crowdin, not in the manifest. The `bundle` field stays in both manifests for `create` of CLI versions that register an app from the manifest alone: there it is what puts the app into development mode. Newer versions and Crowdin ignore it.
 - `src/index.tsx` is the entry point: calls `prepareOrganizationMenu(module)` / `prepareProfileResourcesMenu(module)` from the SDK, one per manifest module.
 - `src/modules/dashboard/index.tsx` is a `ModuleContract` (`{ render }`) that mounts React into `#root`, wrapped in `AppI18nProvider` + `AppUiProvider`.
 - `src/modules/dashboard/app.tsx` is the actual UI.
@@ -61,4 +61,4 @@ The host loads the bundle via a **classic `<script>` tag**, not ESM. This drives
 - Vite library mode, `iife` format, single `dist/app.js`; CSS is injected by JS (`vite-plugin-css-injected-by-js`), no separate stylesheet.
 - `process.env.NODE_ENV` is replaced via `define` (an IIFE has no `process`).
 - `scripts/dev.mjs` hand-rolls the react-refresh preamble + Vite client bootstrap for `/app.js`, and applies a CORS allowlist (localhost, `*.bundle.crowdin.net`, plus origins from `CROWDIN_DEV_CORS_ORIGIN`).
-- `scripts/build.mjs` runs Vite, then `compile-i18n.mjs` (Vite's `emptyOutDir` would wipe the catalogs), then zips `dist/` into `dist/bundle.zip` deterministically (fixed 1980 mtime, since fflate rejects mtime 0).
+- `scripts/build.mjs` runs Vite, then `compile-i18n.mjs` (Vite's `emptyOutDir` would wipe the catalogs), then packs `manifest.json` (without `bundle`) and `dist/` into `dist/<app-name>.crowdinapp` deterministically (fixed 1980 mtime in local time, since fflate rejects an earlier date).

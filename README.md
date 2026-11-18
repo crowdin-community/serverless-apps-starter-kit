@@ -27,7 +27,7 @@ The application source (`src/` and `locales/`) is identical between the two; the
 
 ## Quick start
 
-The recommended way to start from these templates is the CLI: it scaffolds the project, registers the app in Crowdin, and links the folder to it:
+The recommended way to start from these templates is the CLI: it scaffolds the project, installs its dependencies, builds it, registers the app in Crowdin, and links the folder to it:
 
 ```bash
 npm install --global @crowdin/serverless-apps-cli
@@ -35,7 +35,6 @@ npm install --global @crowdin/serverless-apps-cli
 crowdin-serverless-apps login
 crowdin-serverless-apps create my-app --template projects-dashboard-cli   # or projects-dashboard-standalone
 cd my-app
-pnpm install
 pnpm dev          # the app now runs live inside Crowdin with hot reload
 pnpm run publish  # build, upload, and serve the app from Crowdin
 ```
@@ -49,18 +48,18 @@ Available in both templates:
 | Command | Description |
 |---------|-------------|
 | `pnpm dev` | Dev server on port 8080 (or the next free port) with hot reload; the app loads live inside Crowdin |
-| `pnpm build` | Production build → `dist/`, packaged as `dist/bundle.zip` |
+| `pnpm build` | Production build → `dist/`, packed as `dist/<app-name>.crowdinapp` (the manifest plus the build) |
 | `pnpm extract` | Scan the source for translatable text and update `locales/*.po` |
 | `pnpm lint` | Lint with Biome |
 | `pnpm format` | Auto-format with Biome |
 | `pnpm typecheck` | Type-check with `tsc --noEmit` |
 
-The CLI template additionally has `pnpm run publish` (build, upload the bundle to Crowdin, and switch the app to serve it). Note the explicit `run`: plain `pnpm publish` invokes pnpm's built-in registry publish, which never reaches the script.
+The CLI template additionally has `pnpm run publish` (build, send the app file to Crowdin, and switch the app to serve it). Note the explicit `run`: plain `pnpm publish` invokes pnpm's built-in registry publish, which never reaches the script.
 
 ## Anatomy of a template
 
 ```
-manifest.json                    # app manifest: name, scopes, UI modules, bundle mode
+manifest.json                    # app manifest: name, scopes, UI modules
 src/
   index.tsx                      # entry: registers a module per manifest slot
   styles.css                     # Tailwind + SDK theme
@@ -68,7 +67,7 @@ src/
     index.tsx                    # ModuleContract: mounts React with SDK providers
     app.tsx                      # the dashboard UI
 locales/                         # Lingui .po catalogs (en-US source, ja-JP)
-public/logo.png                  # app logo referenced by the manifest
+public/logo.svg                  # app logo referenced by the manifest
 ```
 
 Key pieces of the SDK used by the sample app:
