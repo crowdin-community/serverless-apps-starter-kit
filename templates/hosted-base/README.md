@@ -18,7 +18,14 @@ pnpm install
 pnpm dev        # runs the app locally with wrangler
 ```
 
-While `pnpm dev` runs, open the address it prints followed by `/manifest.json` to see what the app declares to Crowdin.
+`pnpm dev` reads the app's OAuth client from a `.dev.vars` file, which is not committed. Without it the app answers with an error. Create the file before the first run:
+
+```txt title=".dev.vars"
+CROWDIN_CLIENT_ID=local
+CROWDIN_CLIENT_SECRET=local
+```
+
+These placeholder values are enough to look at the app: while `pnpm dev` runs, open the address it prints followed by `/manifest.json` to see what the app declares to Crowdin.
 
 ## Commands
 

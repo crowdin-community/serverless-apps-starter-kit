@@ -11,5 +11,6 @@
     "binding": "ASSETS",
     "run_worker_first": ["/*", "!/assets/*"]
   },
-  "d1_databases": [{ "binding": "DB", "database_name": "__APP_IDENTIFIER__-local", "database_id": "local" }]
+  "d1_databases": [{ "binding": "DB", "database_name": "__APP_IDENTIFIER__-local", "database_id": "local" }],
+  "vars": { "APP_IDENTIFIER": "__APP_IDENTIFIER__" }
 }
