@@ -25,7 +25,7 @@ The `dev`, `preview` and `manifest` commands of `crowdin-serverless-apps` do not
 
 ## Architecture
 
-- `src/index.ts` is the whole app. `createCloudflareWorker` takes a function from the environment to the app configuration (`name`, `identifier`, `clientId`, `clientSecret` and the modules). Modules are added to that configuration; the `@crowdin/app-project-module` documentation lists each module and its options. The identifier is also the Worker name in `wrangler.jsonc` and the package name.
+- `src/index.ts` is the whole app. `createCloudflareWorker` takes a function from the environment to the app configuration (`name`, `identifier`, `clientId`, `clientSecret` and the modules). Modules are added to that configuration; the `@crowdin/app-project-module` documentation lists each module and its options. The identifier is also the Worker name in `wrangler.jsonc`.
 - `wrangler.jsonc` is for building and for local development only. Hosted, the `DB`, `FILES` and `ASSETS` bindings, the hostname and the OAuth client variables come from Crowdin. Do not add `account_id`, `routes` or `triggers`.
 - `public/` is the static assets directory. The build uploads this folder by name, so do not rename it or change `assets.directory` in `wrangler.jsonc`. `public/assets` is copied from the SDK by `pnpm dev` and `pnpm build` and is not committed. The app logo is `public/logo.png`; without that file the SDK draws a letter logo from the app name.
 - Keep `package.json` dependencies to what the Worker imports. `wrangler` is a dev dependency of the project, so the build uses the version pinned here.
