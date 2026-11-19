@@ -40,15 +40,19 @@ Note the explicit `run` in `pnpm run publish`: plain `pnpm publish` invokes pnpm
 
 `build`, `publish` and `logs` are commands of [`@crowdin/serverless-apps-cli`](https://www.npmjs.com/package/@crowdin/serverless-apps-cli), a dev dependency of the app. `pnpm logs` shows the last 15 minutes; options go after the command, for example `pnpm logs --minutes 120 --search timeout`.
 
-The first publish registers the app's OAuth client and needs `CROWDIN_APP_CLIENT_ID` and `CROWDIN_APP_CLIENT_SECRET`. Run it in a terminal and it prompts for both values, or export them first:
+The first publish also creates the app's OAuth app in Crowdin, with the scopes that `scopes` in `src/index.ts` lists. Crowdin gives an OAuth app only scopes that your token has:
+
+- After `crowdin-serverless-apps login`, the first publish works for an app that lists `project` scopes or none.
+- An app that lists other scopes needs a personal access token with those scopes, `oauth-client` and `application` for its first publish. Create it in Crowdin and export it in your own terminal:
 
 ```bash
-export CROWDIN_APP_CLIENT_ID=...
-export CROWDIN_APP_CLIENT_SECRET=...
+export CROWDIN_PERSONAL_TOKEN=...
 pnpm run publish
 ```
 
-An AI agent's shell does not receive variables you export in another terminal. When an agent publishes for you, either run the first publish yourself in a terminal, or start the agent from a shell where both variables are already exported. Never paste the secret into the chat.
+Later publishes work with the login. On Crowdin Enterprise only an organization admin can publish. Never paste a token into a chat with an AI agent: run that first publish yourself.
+
+To use an OAuth app that you created in Crowdin yourself, export `CROWDIN_APP_CLIENT_ID` and `CROWDIN_APP_CLIENT_SECRET` before the first publish.
 
 ## Adding modules
 
