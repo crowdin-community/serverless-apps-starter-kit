@@ -8,7 +8,6 @@ Scaffolded from the `hosted-base` template of the [serverless apps starter kit](
 
 - Node.js `^22.19 || ^24`
 - [pnpm](https://pnpm.io)
-- The [`@crowdin/serverless-apps-cli`](https://www.npmjs.com/package/@crowdin/serverless-apps-cli) for `build` and `publish`
 - A Crowdin or Crowdin Enterprise account
 
 ## Getting started
@@ -20,7 +19,7 @@ pnpm dev        # runs the app locally with wrangler
 
 `pnpm dev` reads the app's OAuth client from a `.dev.vars` file, which is not committed. Without it the app answers with an error. Create the file before the first run:
 
-```txt title=".dev.vars"
+```txt
 CROWDIN_CLIENT_ID=local
 CROWDIN_CLIENT_SECRET=local
 ```
@@ -34,9 +33,12 @@ These placeholder values are enough to look at the app: while `pnpm dev` runs, o
 | `pnpm dev` | Run the app locally with `wrangler dev` |
 | `pnpm build` | Bundle `src/` into `dist/` |
 | `pnpm run publish` | Build, deploy the app and install it in your Crowdin organization |
+| `pnpm logs` | Show what the deployed app wrote to the console, its errors and its requests |
 | `pnpm typecheck` | Type-check with `tsc --noEmit` |
 
 Note the explicit `run` in `pnpm run publish`: plain `pnpm publish` invokes pnpm's built-in registry publish and never reaches the script.
+
+`build`, `publish` and `logs` are commands of [`@crowdin/serverless-apps-cli`](https://www.npmjs.com/package/@crowdin/serverless-apps-cli), a dev dependency of the app. `pnpm logs` shows the last 15 minutes; options go after the command, for example `pnpm logs --minutes 120 --search timeout`.
 
 The first publish registers the app's OAuth client and needs `CROWDIN_APP_CLIENT_ID` and `CROWDIN_APP_CLIENT_SECRET`. Run it in a terminal and it prompts for both values, or export them first:
 

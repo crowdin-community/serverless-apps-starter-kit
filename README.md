@@ -19,7 +19,7 @@ The two templates differ only in who owns the build toolchain:
 
 The application source (`src/` and `locales/`) is identical between the two; the templates are a like-for-like comparison of the two toolchain approaches.
 
-A third template, [`templates/hosted-base`](templates/hosted-base), is a different kind of app: a hosted Crowdin app, a Cloudflare Worker built with [`@crowdin/app-project-module`](https://www.npmjs.com/package/@crowdin/app-project-module) that Crowdin runs for you. It starts with no modules; you add them in `src/index.ts`. Pick it when your app needs server-side logic, such as webhooks, a custom machine translation engine or custom file formats.
+A third template, [`templates/hosted-base`](templates/hosted-base), is a different kind of app: a hosted Crowdin app, a Cloudflare Worker built with [`@crowdin/app-project-module`](https://www.npmjs.com/package/@crowdin/app-project-module) that Crowdin runs for you. It starts with no modules; you add them in `src/index.ts`. Pick it when your app needs server-side logic, such as webhooks, a custom machine translation engine or custom file formats. The sections below describe the two serverless templates; the hosted template has its own commands and layout, described in [its README](templates/hosted-base/README.md).
 
 ## Requirements
 
