@@ -7,7 +7,7 @@ interface Env extends CrowdinCloudflareEnv {
 export default createCloudflareWorker<Env>((env) => ({
   name: "__APP_NAME__",
   identifier: env.APP_IDENTIFIER,
-  description: "A Crowdin app hosted on Crowdin",
+  description: "A Crowdin app with a backend",
   clientId: env.CROWDIN_CLIENT_ID,
   clientSecret: env.CROWDIN_CLIENT_SECRET,
   // Keep this a plain list of Scope values from "@crowdin/app-project-module": the build reads it from this file. Without the line the SDK asks for "project".

@@ -2,7 +2,7 @@
   "private": true,
   "name": "__APP_IDENTIFIER__",
   "version": "0.0.0",
-  "description": "A Crowdin app hosted on Crowdin, built with the SDK's Cloudflare adapter.",
+  "description": "A Crowdin app with a backend that Crowdin runs, built with the SDK's Cloudflare adapter.",
   "license": "MIT",
   "type": "module",
   "scripts": {

@@ -1,4 +1,4 @@
-// Build and local-dev configuration only. Hosted, Crowdin supplies every binding and the hostname;
+// Build and local-dev configuration only. For the deployed app, Crowdin supplies every binding and the hostname;
 // `crowdin-serverless-apps build` runs `wrangler deploy --dry-run` to turn src/ into the one-file bundle that is uploaded.
 {
   "$schema": "node_modules/wrangler/config-schema.json",

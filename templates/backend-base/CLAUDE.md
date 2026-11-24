@@ -4,7 +4,7 @@
 
 ## What this app is
 
-A hosted Crowdin app: a Cloudflare Worker built with `createCloudflareWorker` from `@crowdin/app-project-module/cloudflare` and run by Crowdin. There is no server to operate and no Cloudflare account to configure.
+A Crowdin app with a backend: a Cloudflare Worker built with `createCloudflareWorker` from `@crowdin/app-project-module/cloudflare` and run by Crowdin. There is no server to operate and no Cloudflare account to configure.
 
 What the app does in Crowdin comes from SDK modules. Before adding or changing a module, read its page in the SDK documentation: <https://crowdin.github.io/app-project-module/modules/> lists the modules, and <https://crowdin.github.io/app-project-module/llms.txt> links the whole documentation as text.
 
@@ -52,7 +52,7 @@ The app has an OAuth app in Crowdin, created on the first publish with these sco
 ## Architecture
 
 - `src/index.ts` is the whole app. `createCloudflareWorker` takes a function from the environment to the app configuration (`name`, `identifier`, `clientId`, `clientSecret`, `scopes` and the modules) and, as its second argument, options. Routes of your own go in the `setup` option, which receives the Express `app` and `crowdinApp`.
-- `wrangler.jsonc` configures the build and the local run only. Hosted, Crowdin supplies what the file declares for local work (the database, the file storage, the assets, the variables) and the hostname, so the file has no `account_id`, `routes` or `triggers`.
+- `wrangler.jsonc` configures the build and the local run only. For the deployed app, Crowdin supplies what the file declares for local work (the database, the file storage, the assets, the variables) and the hostname, so the file has no `account_id`, `routes` or `triggers`.
 - The app identifier reaches the code as the `APP_IDENTIFIER` variable, so keep `identifier: env.APP_IDENTIFIER`.
 - Scheduled work goes through the SDK: call `crowdinApp.cron.schedule(expression, task)` in `setup`. Crowdin drives the schedule; the SDK documentation on background jobs has its limits on Workers.
 - `public/` is the static assets directory. Keep its name and `assets.directory` in `wrangler.jsonc` as they are: the build expects them. `public/assets` holds the SDK's UI files; it is generated and not committed. The app logo is `public/logo.png`; without that file the SDK draws a letter logo from the app name.

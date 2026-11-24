@@ -10,9 +10,9 @@ Each template has its own `README.md` and `CLAUDE.md`. Both are copied into ever
 
 There are no tests. Check a change with the template's own scripts, in its folder.
 
-## Serverless templates
+## Frontend templates
 
-`projects-dashboard-cli` and `projects-dashboard-standalone` are frontend-only apps that run in an iframe inside Crowdin and Crowdin Enterprise. They are the **same app** (a projects dashboard) and differ only in who owns the toolchain:
+`projects-dashboard-cli` and `projects-dashboard-standalone` are frontend apps: they run in an iframe inside Crowdin and Crowdin Enterprise. They are the **same app** (a projects dashboard) and differ only in who owns the toolchain:
 
 - `templates/projects-dashboard-cli` contains app code only. The `crowdin-serverless-apps` CLI owns Vite, Lingui, Biome and the base tsconfig (`extends: @crowdin/serverless-apps-cli/tsconfig.base.json`). This template stays free of toolchain config files (`vite.config`, `lingui.config`, `biome.json`): their absence is the point.
 - `templates/projects-dashboard-standalone` owns its full toolchain: `vite.config.ts`, `lingui.config.mjs`, `biome.json` and `scripts/{dev,build,compile-i18n}.mjs`, built on `@crowdin/serverless-apps-sdk` alone.
@@ -23,9 +23,9 @@ The two guides share their passages on the app and the SDK: change a shared pass
 
 Both manifests keep the `bundle` field for `create` of CLI versions that register an app from the manifest alone: there it is what puts the app into development mode. Newer versions and Crowdin ignore it.
 
-## Hosted template
+## Backend template
 
-`templates/hosted-base` is a hosted Crowdin app: a Cloudflare Worker built with `createCloudflareWorker` from `@crowdin/app-project-module/cloudflare`, which Crowdin runs. It declares no module: the developer adds them in `src/index.ts`. It shares nothing with the serverless templates.
+`templates/backend-base` is a Crowdin app with a backend: a Cloudflare Worker built with `createCloudflareWorker` from `@crowdin/app-project-module/cloudflare`, which Crowdin runs. It declares no module: the developer adds them in `src/index.ts`. It shares nothing with the frontend templates.
 
 The CLI creates, builds and publishes the apps made from this template, and relies on its shape. Keep these parts as they are, or change them together with the CLI:
 

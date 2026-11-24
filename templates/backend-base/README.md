@@ -1,8 +1,8 @@
-# Hosted Crowdin app
+# Crowdin app with a backend
 
-A Crowdin app that Crowdin hosts for you. The app is a [Cloudflare Worker](https://developers.cloudflare.com/workers/) built with `createCloudflareWorker` from [`@crowdin/app-project-module`](https://www.npmjs.com/package/@crowdin/app-project-module), so there is no server to run and no Cloudflare account to set up.
+A Crowdin app with a backend that Crowdin runs for you. The app is a [Cloudflare Worker](https://developers.cloudflare.com/workers/) built with `createCloudflareWorker` from [`@crowdin/app-project-module`](https://www.npmjs.com/package/@crowdin/app-project-module), so there is no server to run and no Cloudflare account to set up.
 
-Scaffolded from the `hosted-base` template of the [serverless apps starter kit](https://github.com/crowdin-community/serverless-apps-starter-kit). It declares no modules yet: add the ones your app needs in `src/index.ts`.
+Scaffolded from the `backend-base` template of the [serverless apps starter kit](https://github.com/crowdin-community/serverless-apps-starter-kit). It declares no modules yet: add the ones your app needs in `src/index.ts`.
 
 ## Requirements
 
