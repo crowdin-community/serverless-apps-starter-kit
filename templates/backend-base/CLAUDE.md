@@ -4,7 +4,7 @@
 
 ## What this app is
 
-A Crowdin app with a backend: a Cloudflare Worker built with `createCloudflareWorker` from `@crowdin/app-project-module/cloudflare` and run by Crowdin. There is no server to operate and no Cloudflare account to configure.
+A Crowdin backend app: a Cloudflare Worker built with `createCloudflareWorker` from `@crowdin/app-project-module/cloudflare` and run by Crowdin. There is no server to operate and no Cloudflare account to configure.
 
 What the app does in Crowdin comes from SDK modules. Before adding or changing a module, read its page in the SDK documentation: <https://crowdin.github.io/app-project-module/modules/> lists the modules, and <https://crowdin.github.io/app-project-module/llms.txt> links the whole documentation as text.
 

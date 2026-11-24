@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/github/license/crowdin-community/serverless-apps-starter-kit?cacheSeconds=3600)](LICENSE)
 
-Starter templates for [serverless Crowdin apps](https://github.com/crowdin/serverless-apps): apps that Crowdin and Crowdin Enterprise run for you, with nothing to host or operate. A serverless app is either a frontend app, which runs in the browser inside the Crowdin UI, or an app with a backend.
+Starter templates for [serverless Crowdin apps](https://github.com/crowdin/serverless-apps): apps that Crowdin and Crowdin Enterprise run for you, with nothing to host or operate. A serverless app is either a frontend app, which runs in the browser inside the Crowdin UI, or a backend app, which has server-side code.
 
 These templates are the ones scaffolded by the `create` command of [`@crowdin/serverless-apps-cli`](https://www.npmjs.com/package/@crowdin/serverless-apps-cli). You can also browse them here to see what a complete serverless app looks like end to end.
 
@@ -19,7 +19,7 @@ The two templates differ only in who owns the build toolchain:
 
 The application source (`src/` and `locales/`) is identical between the two; the templates are a like-for-like comparison of the two toolchain approaches.
 
-A third template, [`templates/backend-base`](templates/backend-base), is an app with a backend: a Cloudflare Worker built with [`@crowdin/app-project-module`](https://www.npmjs.com/package/@crowdin/app-project-module) that Crowdin runs for you. It starts with no modules; you add them in `src/index.ts`. Pick it when your app needs server-side logic, such as webhooks, a custom machine translation engine or custom file formats. The sections below describe the two frontend templates; the backend template has its own commands and layout, described in [its README](templates/backend-base/README.md).
+A third template, [`templates/backend-base`](templates/backend-base), is a backend app: a Cloudflare Worker built with [`@crowdin/app-project-module`](https://www.npmjs.com/package/@crowdin/app-project-module) that Crowdin runs for you. It starts with no modules; you add them in `src/index.ts`. Pick it when your app needs server-side logic, such as webhooks, a custom machine translation engine or custom file formats. The sections below describe the two frontend templates; the backend template has its own commands and layout, described in [its README](templates/backend-base/README.md).
 
 ## Requirements
 

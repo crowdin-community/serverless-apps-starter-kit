@@ -1,6 +1,6 @@
-# Crowdin app with a backend
+# Crowdin backend app
 
-A Crowdin app with a backend that Crowdin runs for you. The app is a [Cloudflare Worker](https://developers.cloudflare.com/workers/) built with `createCloudflareWorker` from [`@crowdin/app-project-module`](https://www.npmjs.com/package/@crowdin/app-project-module), so there is no server to run and no Cloudflare account to set up.
+A Crowdin backend app: an app with server-side code that Crowdin runs for you. The app is a [Cloudflare Worker](https://developers.cloudflare.com/workers/) built with `createCloudflareWorker` from [`@crowdin/app-project-module`](https://www.npmjs.com/package/@crowdin/app-project-module), so there is no server to run and no Cloudflare account to set up.
 
 Scaffolded from the `backend-base` template of the [serverless apps starter kit](https://github.com/crowdin-community/serverless-apps-starter-kit). It declares no modules yet: add the ones your app needs in `src/index.ts`.
 
@@ -38,7 +38,7 @@ These placeholder values are enough to look at the app: while `pnpm dev` runs, o
 
 Note the explicit `run` in `pnpm run publish`: plain `pnpm publish` invokes pnpm's built-in registry publish and never reaches the script.
 
-`build`, `publish` and `logs` are commands of [`@crowdin/serverless-apps-cli`](https://www.npmjs.com/package/@crowdin/serverless-apps-cli), a dev dependency of the app; its documentation describes them in full. Options go after the command, and `--help` lists them, as in `pnpm logs --help`.
+`build`, `publish` and `logs` are commands of [`@crowdin/serverless-apps-cli`](https://www.npmjs.com/package/@crowdin/serverless-apps-cli), a dev dependency of the app; the [backend apps documentation](https://crowdin.github.io/serverless-apps/backend-apps/overview/) describes them in full. Options go after the command, and `--help` lists them, as in `pnpm logs --help`.
 
 The first publish also creates the app's OAuth app in Crowdin, with the scopes that `scopes` in `src/index.ts` lists. Crowdin gives an OAuth app only scopes that your token has. When Crowdin refuses, `publish` prints the reason and the ways on: follow them.
 
