@@ -14,7 +14,7 @@ Node `^22.19 || ^24`, pnpm (`pnpm install` first).
 
 ```bash
 pnpm dev          # runs the app locally with wrangler (see "Local run")
-pnpm build        # bundles src/ into dist/
+pnpm build        # builds the app and packs dist/<name>.crowdinapp
 pnpm run publish  # builds, deploys and installs the app
 pnpm logs         # shows what the deployed app logged
 pnpm typecheck    # tsc --noEmit
@@ -56,7 +56,7 @@ The app has an OAuth app in Crowdin, created on the first publish with these sco
 - The app identifier reaches the code as the `APP_IDENTIFIER` variable, so keep `identifier: env.APP_IDENTIFIER`.
 - Scheduled work goes through the SDK: call `crowdinApp.cron.schedule(expression, task)` in `setup`. Crowdin drives the schedule; the SDK documentation on background jobs has its limits on Workers.
 - `public/` is the static assets directory. Keep its name and `assets.directory` in `wrangler.jsonc` as they are: the build expects them. `public/assets` holds the SDK's UI files; it is generated and not committed. The app logo is `public/logo.png`; without that file the SDK draws a letter logo from the app name.
-- `.env` ties this folder to the deployed app. The CLI writes it and it is not committed, so keep it.
+- `.env` ties this folder to the deployed app. The CLI writes it and it is not committed, so keep it. In a fresh clone it is missing, and `publish` says so: `pnpm exec crowdin-serverless-apps link` writes it again for an app the account already has. Never run `create` for that, which registers a second app.
 - Keep `package.json` dependencies to what the Worker imports. `wrangler` is a dev dependency of the project, so the build uses the version pinned here.
 
 There are no tests.

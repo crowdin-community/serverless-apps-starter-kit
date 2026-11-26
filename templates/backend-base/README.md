@@ -31,7 +31,7 @@ These placeholder values are enough to look at the app: while `pnpm dev` runs, o
 | Command | Description |
 |---------|-------------|
 | `pnpm dev` | Run the app locally with `wrangler dev` |
-| `pnpm build` | Bundle `src/` into `dist/` |
+| `pnpm build` | Build the app and pack it into its app file, `dist/<name>.crowdinapp` |
 | `pnpm run publish` | Build and deploy the app, and install it in Crowdin |
 | `pnpm logs` | Show what the deployed app logged |
 | `pnpm typecheck` | Type-check with `tsc --noEmit` |
@@ -43,6 +43,10 @@ Note the explicit `run` in `pnpm run publish`: plain `pnpm publish` invokes pnpm
 The first publish also creates the app's OAuth app in Crowdin, with the scopes that `scopes` in `src/index.ts` lists. Crowdin gives an OAuth app only scopes that your token has. When Crowdin refuses, `publish` prints the reason and the ways on: follow them.
 
 If a way on needs a token or a client secret, set it in your own terminal and run the publish yourself. Never paste one into a chat with an AI agent.
+
+In a fresh clone of the app, `.env` is missing: run `pnpm exec crowdin-serverless-apps link` once and pick the app, then publish as usual.
+
+To give the app to another Crowdin account, send its app file from `dist/`. An admin there installs it with `crowdin-serverless-apps install <file>`; see [share a backend app](https://crowdin.github.io/serverless-apps/backend-apps/sharing/).
 
 ## Adding modules
 
@@ -56,5 +60,5 @@ src/
 public/              # static files; add logo.png for the app logo
   assets/            # SDK UI files, generated (not committed)
 wrangler.jsonc       # build and local-dev configuration
-.env                 # ties this folder to the deployed app; written by the CLI (not committed)
+.env                 # ties this folder to the deployed app; written by create or link (not committed)
 ```
