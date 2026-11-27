@@ -19,7 +19,7 @@ The two templates differ only in who owns the build toolchain:
 
 The application source (`src/` and `locales/`) is identical between the two; the templates are a like-for-like comparison of the two toolchain approaches.
 
-A third template, [`templates/backend-base`](templates/backend-base), is a backend app: a Cloudflare Worker built with [`@crowdin/app-project-module`](https://www.npmjs.com/package/@crowdin/app-project-module) that Crowdin runs for you. It starts with no modules; you add them in `src/index.ts`. Pick it when your app needs server-side logic, such as webhooks, a custom machine translation engine or custom file formats. The sections below describe the two frontend templates; the backend template has its own commands and layout, described in [its README](templates/backend-base/README.md).
+A third template, [`templates/backend-base`](templates/backend-base), is a backend app: a Cloudflare Worker built with [`@crowdin/app-project-module`](https://www.npmjs.com/package/@crowdin/app-project-module) that Crowdin runs for you. It starts with one sample module, a page in a project's Tools with a settings form; you replace it or add others in `src/index.ts`. Pick it when your app needs server-side logic, such as webhooks, a custom machine translation engine or custom file formats. The sections below describe the two frontend templates; the backend template has its own layout, described in [its README](templates/backend-base/README.md).
 
 ## Requirements
 

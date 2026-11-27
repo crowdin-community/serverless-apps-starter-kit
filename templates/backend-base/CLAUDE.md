@@ -6,7 +6,7 @@
 
 A Crowdin backend app: a Cloudflare Worker built with `createCloudflareWorker` from `@crowdin/app-project-module/cloudflare` and run by Crowdin. There is no server to operate and no Cloudflare account to configure.
 
-What the app does in Crowdin comes from SDK modules. Before adding or changing a module, read its page in the SDK documentation: <https://crowdin.github.io/app-project-module/modules/> lists the modules, and <https://crowdin.github.io/app-project-module/llms.txt> links the whole documentation as text.
+What the app does in Crowdin comes from SDK modules. The template starts with one, so that the app `create` installed has something to show: `projectTools` in `src/index.ts`, a page in the Tools of a project with a settings form. It is a sample. When the person wants another type of app (a machine translation engine, a webhook, a file format, a page elsewhere in Crowdin), replace it with the modules of that app, and keep it only when a project tool is what they asked for. Before adding or changing a module, read its page in the SDK documentation: <https://crowdin.github.io/app-project-module/modules/> lists the modules, and <https://crowdin.github.io/app-project-module/llms.txt> links the whole documentation as text.
 
 ## Commands
 
@@ -15,10 +15,11 @@ Node `^22.19 || ^24`, pnpm (`pnpm install` first).
 ```bash
 pnpm dev          # runs the app locally with wrangler (see "Local run")
 pnpm build        # builds the app and packs dist/<name>.crowdinapp
-pnpm run publish  # builds, deploys and installs the app
+pnpm run publish  # builds and deploys a new version of the app
 pnpm logs         # shows what the deployed app logged
 pnpm typecheck    # tsc --noEmit
 pnpm exec crowdin-serverless-apps manifest validate  # checks `scopes` against the Crowdin API calls in src/
+pnpm exec crowdin-serverless-apps preview            # opens the page of a module in Crowdin
 ```
 
 Run `publish` with the explicit `run`: plain `pnpm publish` triggers pnpm's built-in registry publish and never runs the script.
@@ -35,13 +36,13 @@ A change is finished when the last step holds, not when the code compiles.
 4. Open `/manifest.json` at that address. Done when it lists the modules and the scopes of this change.
 5. Tell the person what to try in Crowdin, and pass on anything `publish` asked of them. Then run `pnpm logs`. Done when the requests of that try are in the logs without an error. A request can take a while to reach the logs, so look again before you conclude that it is missing.
 
-Crowdin installs an app only when it has a module, so add at least one before the first publish.
+`create` already deployed the app and installed it in Crowdin, so every publish is a new version of an installed app: when the modules or the scopes changed, the person applies the update in the app's settings in Crowdin. Crowdin accepts an app only when it has a module, so the app always keeps at least one.
 
 ## Scopes and the OAuth app
 
 `scopes` in `src/index.ts` is a plain list of `Scope` values written in place, because the build reads it from this file.
 
-The app has an OAuth app in Crowdin, created on the first publish with these scopes. Crowdin gives it only scopes that the publishing token has; when Crowdin refuses, `publish` prints the reason and the ways on. A scope that is added later is first added to the OAuth app in Crowdin, by the person.
+The app has an OAuth app in Crowdin, which `create` made with the template's scope, `project`. That covers every scope under it, such as `project.task`, so narrow the list to what the code calls: `manifest validate` names a declared scope that no call uses. A scope outside `project`, such as `tm`, `glossary` or `mt`, is first selected in the OAuth app in Crowdin, by the person; then they apply the update in the app's settings. When Crowdin refuses a scope, `publish` prints the reason and the ways on.
 
 **Tokens and secrets are the person's.** When a way on needs a token or a client secret, that run is the person's, in their own terminal. An agent never asks for a token or a secret in chat and never types one into a command or a file.
 

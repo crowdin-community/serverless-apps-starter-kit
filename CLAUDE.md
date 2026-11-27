@@ -25,7 +25,7 @@ Both manifests keep the `bundle` field for `create` of CLI versions that registe
 
 ## Backend template
 
-`templates/backend-base` is a Crowdin app with a backend: a Cloudflare Worker built with `createCloudflareWorker` from `@crowdin/app-project-module/cloudflare`, which Crowdin runs. It declares no module: the developer adds them in `src/index.ts`. It shares nothing with the frontend templates.
+`templates/backend-base` is a Crowdin app with a backend: a Cloudflare Worker built with `createCloudflareWorker` from `@crowdin/app-project-module/cloudflare`, which Crowdin runs. It declares one sample module, a project tool with a settings form, so the app works in Crowdin from the start: the developer replaces it or adds others in `src/index.ts`. It shares nothing with the frontend templates.
 
 The CLI creates, builds and publishes the apps made from this template, and relies on its shape. Keep these parts as they are, or change them together with the CLI:
 
