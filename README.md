@@ -2,13 +2,13 @@
 
 [![License](https://img.shields.io/github/license/crowdin-community/serverless-apps-starter-kit?cacheSeconds=3600)](LICENSE)
 
-Starter templates for [serverless Crowdin apps](https://github.com/crowdin/serverless-apps): frontend-only apps that run inside Crowdin and Crowdin Enterprise without any backend of your own.
+Starter templates for [serverless Crowdin apps](https://github.com/crowdin/serverless-apps): apps that Crowdin and Crowdin Enterprise run for you, with nothing to host or operate. A serverless app is either a frontend app, which runs in the browser inside the Crowdin UI, or a backend app, which has server-side code.
 
 These templates are the ones scaffolded by the `create` command of [`@crowdin/serverless-apps-cli`](https://www.npmjs.com/package/@crowdin/serverless-apps-cli). You can also browse them here to see what a complete serverless app looks like end to end.
 
 ## What's inside
 
-Both templates implement the same sample app: a **projects dashboard** that fills the `organization-menu` and `profile-resources-menu` slots in the Crowdin UI: it lists project groups and projects, shows live translation progress per project, supports sorting and navigation through nested groups, and is localized with Lingui (English source, Japanese translation included). It adapts automatically to Crowdin (crowdin.com) vs Crowdin Enterprise.
+Two templates are frontend apps. Both implement the same sample app: a **projects dashboard** that fills the `organization-menu` and `profile-resources-menu` slots in the Crowdin UI: it lists project groups and projects, shows live translation progress per project, supports sorting and navigation through nested groups, and is localized with Lingui (English source, Japanese translation included). It adapts automatically to Crowdin (crowdin.com) vs Crowdin Enterprise.
 
 The two templates differ only in who owns the build toolchain:
 
@@ -18,6 +18,8 @@ The two templates differ only in who owns the build toolchain:
 | [`templates/projects-dashboard-standalone`](templates/projects-dashboard-standalone) | Self-owned: the project carries its own `vite.config.ts`, `lingui.config.mjs`, `biome.json`, and build/dev scripts, built on [`@crowdin/serverless-apps-sdk`](https://www.npmjs.com/package/@crowdin/serverless-apps-sdk) alone. | You need full control over the toolchain or want to integrate an existing setup |
 
 The application source (`src/` and `locales/`) is identical between the two; the templates are a like-for-like comparison of the two toolchain approaches.
+
+A third template, [`templates/backend-base`](templates/backend-base), is a backend app: a Cloudflare Worker built with [`@crowdin/app-project-module`](https://www.npmjs.com/package/@crowdin/app-project-module) that Crowdin runs for you. It starts with one sample module, a page in a project's Tools with a settings form; you replace it or add others in `src/index.ts`. Pick it when your app needs server-side logic, such as webhooks, a custom machine translation engine or custom file formats. The sections below describe the two frontend templates; the backend template has its own layout, described in [its README](templates/backend-base/README.md).
 
 ## Requirements
 
@@ -43,7 +45,7 @@ To work on the templates in this repository directly, run `pnpm install` inside 
 
 ## Commands
 
-Available in both templates:
+Available in both frontend templates:
 
 | Command | Description |
 |---------|-------------|
@@ -56,7 +58,7 @@ Available in both templates:
 
 The CLI template additionally has `pnpm run publish` (build, send the app file to Crowdin, and switch the app to serve it). Note the explicit `run`: plain `pnpm publish` invokes pnpm's built-in registry publish, which never reaches the script.
 
-## Anatomy of a template
+## Anatomy of a frontend template
 
 ```
 manifest.json                    # app manifest: name, scopes, UI modules

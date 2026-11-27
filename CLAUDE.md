@@ -1,64 +1,39 @@
 # Agent guide
 
-This file provides guidance to AI coding agents when working with code in this repository. `AGENTS.md` is a symlink to it.
+`AGENTS.md` is a symlink to this file.
 
 ## What this repository is
 
-Starter templates for **serverless Crowdin apps**: frontend-only apps that run in an iframe inside Crowdin / Crowdin Enterprise. The templates are consumed by `crowdin-serverless-apps create --template <name>` from [`@crowdin/serverless-apps-cli`](https://github.com/crowdin/serverless-apps). This is not a runnable app at the root: there is no root package.json; each directory under `templates/` is an independent pnpm project.
+Starter templates for Crowdin apps, consumed by `crowdin-serverless-apps create --template <name>` from [`@crowdin/serverless-apps-cli`](https://github.com/crowdin/serverless-apps). There is no root `package.json`: each directory under `templates/` is an independent pnpm project. Lockfiles are deliberately left out of git, so a template pins no dependency tree.
 
-Both templates implement the **same app** (a projects dashboard) and differ only in who owns the toolchain:
+Each template has its own `README.md` and `CLAUDE.md`. Both are copied into every app made from the template, so each stands alone and is written for the developer of that app. How a template's app works (commands, entry points, SDK surface, toolchain) is in that template's `CLAUDE.md`: read it before changing the template, and keep it true in the same change.
 
-- `templates/projects-dashboard-cli` contains app code only. The `crowdin-serverless-apps` CLI owns Vite, Lingui, Biome, and the base tsconfig (`extends: @crowdin/serverless-apps-cli/tsconfig.base.json`). **Do not add toolchain config files (vite.config, lingui.config, biome.json) to this template**: their absence is the point.
-- `templates/projects-dashboard-standalone` owns its full toolchain: `vite.config.ts`, `lingui.config.mjs`, `biome.json`, and custom `scripts/{dev,build,compile-i18n}.mjs` built on `@crowdin/serverless-apps-sdk` alone.
+There are no tests. Check a change with the template's own scripts, in its folder.
 
-**Invariant: `src/` and `locales/` are byte-identical between the two templates.** When changing app code or catalogs, apply the same change to both (verify with `diff -r`). Only toolchain files may differ.
+## Frontend templates
 
-## Commands
+`projects-dashboard-cli` and `projects-dashboard-standalone` are frontend apps: they run in an iframe inside Crowdin and Crowdin Enterprise. They are the **same app** (a projects dashboard) and differ only in who owns the toolchain:
 
-Run inside a template directory. Node `^22.19 || ^24`, pnpm (`pnpm install` first; lockfiles are intentionally gitignored: templates must not pin dependency trees).
+- `templates/projects-dashboard-cli` contains app code only. The `crowdin-serverless-apps` CLI owns Vite, Lingui, Biome and the base tsconfig (`extends: @crowdin/serverless-apps-cli/tsconfig.base.json`). This template stays free of toolchain config files (`vite.config`, `lingui.config`, `biome.json`): their absence is the point.
+- `templates/projects-dashboard-standalone` owns its full toolchain: `vite.config.ts`, `lingui.config.mjs`, `biome.json` and `scripts/{dev,build,compile-i18n}.mjs`, built on `@crowdin/serverless-apps-sdk` alone.
 
-Both templates:
+**Invariant: `src/` and `locales/` are byte-identical between the two.** Apply a change to app code or catalogs to both. It is done when `diff -r` of the two `src` folders and of the two `locales` folders prints nothing. Only toolchain files differ.
 
-```bash
-pnpm dev          # dev server on :8080 (or the next free port) with HMR; the app loads live inside Crowdin
-pnpm build        # production build → dist/ (incl. dist/<app-name>.crowdinapp)
-pnpm extract      # Lingui: scan src for translatable text, update locales/*.po
-pnpm lint         # Biome
-pnpm format       # Biome, writes changes
-pnpm typecheck    # tsc --noEmit
-```
+The two guides share their passages on the app and the SDK: change a shared passage in both.
 
-CLI template only: `pnpm run publish` (build + send the app file to Crowdin; the explicit `run` matters: plain `pnpm publish` triggers pnpm's built-in registry publish and never runs the script). All its scripts delegate to the `crowdin-serverless-apps` binary, which also provides `login`, `create`, `link`, `preview`, `manifest validate`; see the CLI README.
+Both manifests keep the `bundle` field for `create` of CLI versions that register an app from the manifest alone: there it is what puts the app into development mode. Newer versions and Crowdin ignore it.
 
-There are no tests.
+## Backend template
 
-## Architecture
+`templates/backend-base` is a Crowdin app with a backend: a Cloudflare Worker built with `createCloudflareWorker` from `@crowdin/app-project-module/cloudflare`, which Crowdin runs. It declares one sample module, a project tool with a settings form, so the app works in Crowdin from the start: the developer replaces it or adds others in `src/index.ts`. It shares nothing with the frontend templates.
 
-### App structure (both templates)
+The CLI creates, builds and publishes the apps made from this template, and relies on its shape. Keep these parts as they are, or change them together with the CLI:
 
-- `manifest.json` declares the app: name, scopes and `modules` (which Crowdin UI slots it fills; here `organization-menu` and `profile-resources-menu`). It reaches Crowdin only inside the app file (`.crowdinapp`: the manifest plus the build): the CLI template sends it on `publish` and while `dev` runs, the standalone template packs it in `scripts/build.mjs` for upload in the Crowdin UI. Where Crowdin loads the app from (development mode: `http://localhost:8080/app.js` from your machine; otherwise the uploaded build) is set in Crowdin, not in the manifest. The `bundle` field stays in both manifests for `create` of CLI versions that register an app from the manifest alone: there it is what puts the app into development mode. Newer versions and Crowdin ignore it.
-- `src/index.tsx` is the entry point: calls `prepareOrganizationMenu(module)` / `prepareProfileResourcesMenu(module)` from the SDK, one per manifest module.
-- `src/modules/dashboard/index.tsx` is a `ModuleContract` (`{ render }`) that mounts React into `#root`, wrapped in `AppI18nProvider` + `AppUiProvider`.
-- `src/modules/dashboard/app.tsx` is the actual UI.
-- `.env` with `CROWDIN_APP_ID` is the per-developer link to the registered app, written by `create`/`link`, gitignored.
+- no `manifest.json`, and `@crowdin/app-project-module` in `dependencies`;
+- the placeholders `__APP_NAME__` and `__APP_IDENTIFIER__`, and the files they are in;
+- `identifier: env.APP_IDENTIFIER` in `src/index.ts`;
+- `scopes` in `src/index.ts` as a plain list written in place;
+- `public` as the assets folder;
+- `wrangler` as a dev dependency pinned to an exact version.
 
-### SDK surface (`@crowdin/serverless-apps-sdk`)
-
-- root exports host-iframe interactions: `prepare*Menu`, `resize()`, `redirect(url)`
-- `/api`: `createCrowdinClient()`, a pre-authenticated `@crowdin/crowdin-api-client`
-- `/react`: `useCrowdinContext()`, which detects Crowdin vs Enterprise via its `isEnterprise` flag (never infer edition from module type or URL)
-- `/ui`: shadcn-style component kit + `theme.css` (imported in `src/styles.css` alongside Tailwind) + `styles.css`
-- `/i18n`: `AppI18nProvider`, wires Lingui to the host locale
-
-### i18n (Lingui)
-
-Source strings live in code via macros (`<Trans>`, `<Plural>`, `` t` ` ``); `pnpm extract` regenerates `locales/*.po`. `en-US` is the source locale; other `.po` files hold translations. The build compiles catalogs to `dist/locales/<locale>.json`.
-
-### Standalone toolchain constraints
-
-The host loads the bundle via a **classic `<script>` tag**, not ESM. This drives most of the standalone config:
-
-- Vite library mode, `iife` format, single `dist/app.js`; CSS is injected by JS (`vite-plugin-css-injected-by-js`), no separate stylesheet.
-- `process.env.NODE_ENV` is replaced via `define` (an IIFE has no `process`).
-- `scripts/dev.mjs` hand-rolls the react-refresh preamble + Vite client bootstrap for `/app.js`, and applies a CORS allowlist (localhost, `*.bundle.crowdin.net`, plus origins from `CROWDIN_DEV_CORS_ORIGIN`).
-- `scripts/build.mjs` runs Vite, then `compile-i18n.mjs` (Vite's `emptyOutDir` would wipe the catalogs), then packs `manifest.json` (without `bundle`) and `dist/` into `dist/<app-name>.crowdinapp` deterministically (fixed 1980 mtime in local time, since fflate rejects an earlier date).
+In the template folder only `pnpm typecheck` runs, once the dependencies are installed: Wrangler refuses the placeholder name in `wrangler.jsonc`, so `dev` and the build need an app that `create` scaffolded.
